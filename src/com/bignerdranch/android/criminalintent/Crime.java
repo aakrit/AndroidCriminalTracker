@@ -8,10 +8,15 @@ public class Crime {
     private String mTitle;
     private Date mDate;
     private boolean mSolved;
-    
+
     public Crime() {
         mId = UUID.randomUUID();
         mDate = new Date();
+    }
+
+    @Override
+    public String toString() {
+        return mTitle;
     }
 
     public String getTitle() {
@@ -26,21 +31,21 @@ public class Crime {
         return mId;
     }
 
-	public boolean isSolved() {
+    public boolean isSolved() {
         return mSolved;
     }
 
     public void setSolved(boolean solved) {
         mSolved = solved;
     }
-    
+
     public Date getDate() {
-		return mDate;
-	}
+        return mDate;
+    }
 
-	public void setDate(Date date) {
-		mDate = date;
-	}
+    public void setDate(Date date) {
+        mDate = date;
+    }
 
-    
+
 }
