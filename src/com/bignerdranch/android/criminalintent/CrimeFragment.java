@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,25 +52,30 @@ public class CrimeFragment extends Fragment {
 
         setHasOptionsMenu(true);
     }
-    
+
     public void updateDate() {
         mDateButton.setText(mCrime.getDate().toString());
     }
 
-    @TargetApi(11)
     @Override
+    @TargetApi(11)
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_crime, parent, false);
-  
+        
+        if (mCrime.getTitle() != null) {
+            getActivity().setTitle(mCrime.getTitle());
+        }
+        
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-        }   
-
+        }
+        
         mTitleField = (EditText)v.findViewById(R.id.crime_title);
         mTitleField.setText(mCrime.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence c, int start, int before, int count) {
                 mCrime.setTitle(c.toString());
+                getActivity().setTitle(mCrime.getTitle());
             }
 
             public void beforeTextChanged(CharSequence c, int start, int count, int after) {
@@ -95,7 +99,7 @@ public class CrimeFragment extends Fragment {
                 dialog.show(fm, DIALOG_DATE);
             }
         });
-        
+
         mSolvedCheckBox = (CheckBox)v.findViewById(R.id.crime_solved);
         mSolvedCheckBox.setChecked(mCrime.isSolved());
         mSolvedCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -103,7 +107,7 @@ public class CrimeFragment extends Fragment {
                 // set the crime's solved property
                 mCrime.setSolved(isChecked);
             }
-        });
+        });       
         
         return v; 
     }
@@ -116,6 +120,12 @@ public class CrimeFragment extends Fragment {
             mCrime.setDate(date);
             updateDate();
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        CrimeLab.get(getActivity()).saveCrimes();
     }
 
     @Override
