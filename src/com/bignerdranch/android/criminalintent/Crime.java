@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
+//model for crimes
 public class Crime {
 
     private static final String JSON_ID = "id";
@@ -39,7 +39,6 @@ public class Crime {
     }
 
     public JSONObject toJSON() throws JSONException {
-    	//These are all strings
         JSONObject json = new JSONObject();
         json.put(JSON_ID, mId.toString());
         json.put(JSON_TITLE, mTitle);
